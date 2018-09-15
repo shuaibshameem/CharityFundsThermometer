@@ -19,6 +19,7 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import javax.swing.*;
 
 
 public class Thermometer {
@@ -64,31 +65,38 @@ public class Thermometer {
                 .build();
         ValueRange response;
         List<List<Object>> values;
+
+        // Above code utilized from Google Sheets API Quickstart file
+        // Below code modified from above file for thermometer use
+
         int totalRaised = 0;
         int rowsTraversed = 0;
         int i;
+
+        thermGraphics window = new thermGraphics();
 
         do {
             response = service.spreadsheets().values()
                     .get(spreadsheetId, range)
                     .execute();
             values = response.getValues();
-            i = 0;
+            i = 0; // iteration count
 
             for (List row : values){
                 i++;
-                if(i > rowsTraversed && !(row.get(0).equals("EXIT"))) {
-                    rowsTraversed++;
-                    totalRaised += Integer.valueOf((String) row.get(1));
-                    System.out.println(row.get(0) + " donated $" + row.get(1) + " || total = " + totalRaised);
+                if(i > rowsTraversed && !(row.get(0).equals("EXIT"))) { // read row if row previously unread and if column 0 does not contain "EXIT"
+                    rowsTraversed++; //track rows read
+                    window.addDonor((String) row.get(0), Double.valueOf((String) row.get(1)));
+                    totalRaised += Integer.valueOf((String) row.get(1)); // track total raised for use with graphical thermometer
+                    System.out.println(row.get(0) + " donated $" + row.get(1) + " || total = " + totalRaised); // temporary back-end debug line
                     //update graphics
-                }else if(row.get(0).equals("EXIT")) break;
-                TimeUnit.SECONDS.sleep(1);
+                }else if(row.get(0).equals("EXIT")) break; // break for loop if column 0 contains "EXIT" (To deny access to rows that may not be completed yet)
+                TimeUnit.SECONDS.sleep(1); // Time out between row reads
             }
 
-        TimeUnit.SECONDS.sleep(15);
+        TimeUnit.SECONDS.sleep(15); // Time out between sheet retrievals
 
-        } while (true);
+        } while (true); //determine how to exit cleanly - infinite loop used for development stage
 
 
 
