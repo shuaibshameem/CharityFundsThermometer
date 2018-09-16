@@ -79,8 +79,8 @@ public class thermGraphics extends JPanel{
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // draw TCF Logo
-        drawLogo(g2);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0,0,1920,1080);
 
         // draw thermometer
         drawThermometer(g2);
@@ -91,6 +91,9 @@ public class thermGraphics extends JPanel{
         // draw donor names and donation amount
         drawDonors(g2);
 
+        // draw TCF Logo
+        drawLogo(g2);
+
         /*try{
             TimeUnit.MILLISECONDS.sleep(30);
         } catch (InterruptedException x){
@@ -100,13 +103,16 @@ public class thermGraphics extends JPanel{
     }
 
     private void drawLogo(Graphics2D g2){
+
+        g2.setColor(Color.WHITE);
+        g2.fillRect(700,0,1220,350);
         BufferedImage img = null;
         try{
             img = ImageIO.read(new File("D:\\Windows Default Directory Backup\\Documents\\GitHub\\CharityFundsThermometer\\src\\main\\resources\\TCF-USA-newLogo.png"));
         }catch (IOException e){
             System.out.println("Nope.");
         }
-        g2.drawImage(img, 950, 50, this);
+        g2.drawImage(img, 975, 50, this);
     }
 
     private void drawGoalLines(Graphics2D g2){
@@ -155,7 +161,7 @@ public class thermGraphics extends JPanel{
         for(thermData current : donors){
             g2.setColor(current.color);
             g2.setFont(new Font("TimesRoman", Font.BOLD, current.size));
-            g2.drawString((current.name + " $" + String.format("%.2f", current.amount)), current.x, current.y);
+            g2.drawString((current.name + " $" + String.format("%,.2f", current.amount)), current.x, current.y);
             current.y-= 2;
             if(current.y > 980) break;
             if(current.y < -30) removeDonor();
