@@ -69,7 +69,7 @@ public class Thermometer {
         // Above code utilized from Google Sheets API Quickstart file
         // Below code modified from above file for thermometer use
 
-        int totalRaised = 0;
+        double totalRaised = 0;
         int rowsTraversed = 0;
         int i;
 
@@ -87,7 +87,7 @@ public class Thermometer {
                 if(i > rowsTraversed && !(row.get(0).equals("EXIT"))) { // read row if row previously unread and if column 0 does not contain "EXIT"
                     rowsTraversed++; //track rows read
                     window.addDonor((String) row.get(0), Double.valueOf((String) row.get(1)));
-                    totalRaised += Integer.valueOf((String) row.get(1)); // track total raised for use with graphical thermometer
+                    totalRaised += Double.valueOf((String) row.get(1)); // track total raised for use with graphical thermometer
                     System.out.println(row.get(0) + " donated $" + row.get(1) + " || total = " + totalRaised); // temporary back-end debug line
                     //update graphics
                 }else if(row.get(0).equals("EXIT")) break; // break for loop if column 0 contains "EXIT" (To deny access to rows that may not be completed yet)
