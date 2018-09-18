@@ -158,14 +158,16 @@ public class thermGraphics extends JPanel{
     }
 
     private void drawDonors(Graphics2D g2){
+        boolean remove = false;
         for(thermData current : donors){
             g2.setColor(current.color);
             g2.setFont(new Font("TimesRoman", Font.BOLD, current.size));
             g2.drawString((current.name + " $" + String.format("%,.2f", current.amount)), current.x, current.y);
             current.y-= 2;
             if(current.y > 980) break;
-            if(current.y < -30) removeDonor();
+            if(current.y < -30) remove = true;
         }
+        if(remove) removeDonor();
     }
 
     private void drawThermometer(Graphics2D g2){
